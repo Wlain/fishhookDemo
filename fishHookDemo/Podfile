@@ -1,0 +1,4 @@
+target 'fishHookDemo' do
+  use_frameworks!
+  pod 'fishhook'
+end

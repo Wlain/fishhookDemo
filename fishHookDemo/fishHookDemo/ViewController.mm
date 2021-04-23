@@ -37,12 +37,10 @@ static void(*nslogFunc)(NSString* format, ...);
     nslog.name = "NSLog";
     nslog.replacement = (void*)NSLogTest;
     nslog.replaced = (void**)&nslogFunc;
-    // 定义数组
-    struct rebinding rebs[1] = {nslog};
     // 用来重新绑定符号,可以一次交换多个
     // arg1: 存放rebinding结构体的数组
     // arg2: 数组的长度
-    rebind_symbols(rebs, 1);
+    rebind_symbols(&nslog, 1);
     // Do any additional setup after loading the view.
 }
 
@@ -50,12 +48,13 @@ static void(*nslogFunc)(NSString* format, ...);
 // 定义一个新的函数
 void NSLogTest(NSString* format, ...)
 {
-    format = [format stringByAppendingFormat:@"\nhook successed!"];
+    format = [format stringByAppendingFormat:@"\nhook successful!"];
     nslogFunc(format);
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    // hook系统函数
     NSLog(@"touchBegin called");
 }
 
